@@ -1,3 +1,7 @@
+Npm.depends({
+    'rc':'0.4.0'
+});
+
 Package.describe({
     summary: "Meteor cli"
 });
