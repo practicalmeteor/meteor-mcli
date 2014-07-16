@@ -1,0 +1,11 @@
+{
+    "name": "cli",
+    "description": "command line interface",
+    "homepage": "https://github.com/spacejamio/meteor-cli",
+    "author": "SpaceJam.io (LaVaina Inc.)",
+    "version": "0.1.0",
+    "git": "https://github.com/spacejamio/meteor-cli.git",
+    "packages": {
+        "munit": ""
+    }
+}

@@ -1,0 +1,30 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "cli": {
+        "path": "."
+      }
+    },
+    "packages": {
+      "cli": {
+        "path": "."
+      },
+      "munit": {
+        "git": "https://github.com/spacejamio/meteor-munit.git",
+        "tag": "v0.2.0",
+        "commit": "9fbf742c3ea863d9d37f608d58f8fda646c01b2c"
+      },
+      "chai": {
+        "git": "https://github.com/spacejamio/meteor-chai.git",
+        "tag": "v0.1.5",
+        "commit": "9c8f1f769839c946f11f580b8c6f8601f9286a66"
+      },
+      "sinon": {
+        "git": "https://github.com/spacejamio/meteor-sinon.git",
+        "tag": "v0.1.5",
+        "commit": "5078abefbfc67a6c4c19f628ceba4249b84b4e07"
+      }
+    }
+  }
+}
