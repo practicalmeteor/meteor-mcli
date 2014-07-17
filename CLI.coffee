@@ -19,18 +19,32 @@ class CLISingleton
 
       opts = Npm.require('rc')('meteor-cli', { })
 
-      command = opts.command
-      expect(command).to.exist
-      expect(@registeredCommands[command]).to.exist
+      commandName = opts.command
+      expect(commandName).to.be.a("string")
+
+      command = @registeredCommands[commandName]
+      expect(command).to.be.a("object")
+
+      defaultOptions = command.defaultOptions
+
+      opts = Npm.require('rc')('meteor-cli', defaultOptions)
+      #deleting the command name from the options
+      delete opts.command
+      delete opts._
+
+      try
+        command.func opts
+      catch error
+        print error
+        exit 1
 
 
-
-    registerCommand: (name, commandFunction, defaultOptions = { }) ->
+    registerCommand: (name, func, defaultOptions = { }) ->
       expect(name).to.be.a("string")
-      expect(commandFunction).to.be.a("function")
+      expect(func).to.be.a("function")
       expect(defaultOptions).to.be.a("object")
 
-      @registeredCommands[name] = { commandFunction: commandFunction, defaultOptions: defaultOptions }
+      @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
 
   @get:->
     instance ?= new _CLI()
