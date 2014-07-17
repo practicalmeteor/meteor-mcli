@@ -15,7 +15,7 @@ Package.on_use(function (api, where) {
 });
 
 Package.on_test(function(api) {
-    api.use(["coffeescript","chai","munit", "meteor-cli"]);
+    api.use(["coffeescript","chai","munit", "sinon", "meteor-cli"]);
     api.add_files("tests/CLITest.coffee", "server")
 });
 

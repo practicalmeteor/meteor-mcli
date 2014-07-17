@@ -4,6 +4,9 @@ class CLISingleton
 
   class _CLI
 
+    registeredCommands: { }
+
+
     executeCommand: ->
       expect(Meteor.settings.commandLine).to.exist
 
@@ -15,12 +18,19 @@ class CLISingleton
       process.argv.unshift(" ")
 
       opts = Npm.require('rc')('meteor-cli', { })
-      console.log(opts)
-      console.log(process.argv)
 
-      expect(opts.command).to.exist
+      command = opts.command
+      expect(command).to.exist
+      expect(@registeredCommands[command]).to.exist
 
-    registerCommand: (name, command, defaultOptions) ->
+
+
+    registerCommand: (name, commandFunction, defaultOptions = { }) ->
+      expect(name).to.be.a("string")
+      expect(commandFunction).to.be.a("function")
+      expect(defaultOptions).to.be.a("object")
+
+      @registeredCommands[name] = { commandFunction: commandFunction, defaultOptions: defaultOptions }
 
   @get:->
     instance ?= new _CLI()
