@@ -32,7 +32,7 @@ describe "CLITest", ->
 
   it 'CLI.executeCommand - should call the command function with the options', ->
     CLI.executeCommand()
-    expectedOptions = { opt1: true, opt2: true}
+    expectedOptions = { _: [], command: "my-command", opt1: true, opt2: true }
     expect(myCommandFunctionStub).to.have.been.calledWith(expectedOptions)
 
 

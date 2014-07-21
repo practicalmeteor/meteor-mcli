@@ -2,10 +2,11 @@ class CLISingleton
 
   instance = null
 
-  class _CLI
+  class CLI
 
     registeredCommands: { }
 
+    rc = Npm.require('rc')
 
     executeCommand: ->
       expect(Meteor.settings.commandLine).to.exist
@@ -17,7 +18,7 @@ class CLISingleton
       process.argv.unshift(" ")
       process.argv.unshift(" ")
 
-      opts = Npm.require('rc')('meteor-cli', { })
+      opts = rc('meteor-cli', { })
 
       commandName = opts.command
       expect(commandName).to.be.a("string")
@@ -27,16 +28,13 @@ class CLISingleton
 
       defaultOptions = command.defaultOptions
 
-      opts = Npm.require('rc')('meteor-cli', defaultOptions)
-      #deleting the command name from the options
-      delete opts.command
-      delete opts._
+      opts = rc('meteor-cli', defaultOptions)
 
       try
         command.func opts
       catch error
-        print error
-        exit 1
+        console.log error
+        process.exit 1
 
 
     registerCommand: (name, func, defaultOptions = { }) ->
@@ -47,6 +45,6 @@ class CLISingleton
       @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
 
   @get:->
-    instance ?= new _CLI()
+    instance ?= new CLI()
 
 @CLI = CLISingleton.get()
