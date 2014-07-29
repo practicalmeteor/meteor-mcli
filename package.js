@@ -9,9 +9,7 @@ Package.describe({
 Package.on_use(function (api, where) {
     api.use(["coffeescript","chai","sinon"]);
     api.add_files("CLI.coffee", "server");
-    api.add_files("main.js", "server");
-    //api.export("CLI");
-    //api.export("main");
+    api.add_files("main.coffee", "server");
 });
 
 Package.on_test(function(api) {
