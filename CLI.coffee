@@ -9,7 +9,7 @@ class CLISingleton
     rc = Npm.require('rc')
 
     executeCommand: ->
-      expect(Meteor.settings.commandLine).to.exist
+      expect(Meteor.settings.commandLine, "Missing Meteor.settings.commandLine").to.exist
 
       process.argv = Meteor.settings.commandLine.split(" ")
       #following node convetions rc expects the two first process.argv to be node and the node program, and removes them from the conf object
@@ -21,10 +21,10 @@ class CLISingleton
       opts = rc('meteor-cli', { })
 
       commandName = opts.command
-      expect(commandName).to.be.a("string")
+      expect(commandName, "--command is missing").to.be.a("string")
 
       command = @registeredCommands[commandName]
-      expect(command).to.be.a("object")
+      expect(command, commandName + " is not a registered command").to.be.a("object")
 
       defaultOptions = command.defaultOptions
 
@@ -38,9 +38,9 @@ class CLISingleton
 
 
     registerCommand: (name, func, defaultOptions = { }) ->
-      expect(name).to.be.a("string")
-      expect(func).to.be.a("function")
-      expect(defaultOptions).to.be.a("object")
+      expect(name, "command name is missing").to.be.a("string")
+      expect(func, "command function is missing").to.be.a("function")
+      expect(defaultOptions, "command defaultOptions is not an object").to.be.a("object")
 
       @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
 
