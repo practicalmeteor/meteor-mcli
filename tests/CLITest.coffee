@@ -1,53 +1,89 @@
-myCommandFunctionStub = sinon.stub().returns(42)
+Stubs = Munit.stubs
+Spies = Munit.spies
+
 
 describe "CLITest", ->
 
+  cli = null
+  processArgv = null
+  logSpy = null
+
+
+  beforeAll ->
+    processArgv = process.argv
+
+
+  afterAll ->
+    process.argv = processArgv
+
+
   beforeEach ->
-    CLI.registeredCommands = { 'my-command': { func: myCommandFunctionStub, defaultOptions: { opt1: true } } }
-    Meteor.settings.commandLine = "--command my-command --opt2"
+    Spies.restoreAll()
+    console.info 'beforeEach'
+    logSpy = Spies.create "logSpy", console, 'log'
+
+    cli = new spacejamio.CLI()
+    cli.registerCommand 'hello-world', (opts) ->
+      console.log "Hello world from spacejamio:cli"
+
+    cli.registerCommand 'echo', (opts) ->
+      console.log opts.string
+    , _.clone({string: "I am echoing the --string default"})
+    # We're cloning because rc mutates it's objects
 
 
-  it 'CLI.executeCommand - should fail if Meteor.settings.commandLine doesnt exist', ->
-    Meteor.settings.commandLine = undefined
+  afterEach ->
+
+
+  it 'registerCommand - should have hello-world and echo registered', ->
+    expect(cli.registeredCommands['hello-world']).to.be.an 'object'
+    expect(cli.registeredCommands['hello-world']).to.be.to.have.keys ['func', 'defaultOptions']
+    expect(cli.registeredCommands['hello-world'].func).to.be.a 'function'
+    expect(cli.registeredCommands['hello-world'].defaultOptions).to.be.an 'object'
+    expect(cli.registeredCommands['hello-world'].defaultOptions).to.be.empty
+
+    expect(cli.registeredCommands['echo']).to.be.an 'object'
+    expect(cli.registeredCommands['echo']).to.be.to.have.keys ['func', 'defaultOptions']
+    expect(cli.registeredCommands['echo'].func).to.be.a 'function'
+    expect(cli.registeredCommands['echo'].defaultOptions).to.be.an 'object'
+    console.log cli.registeredCommands['echo'].defaultOptions
+    expect(cli.registeredCommands['echo'].defaultOptions).to.have.key 'string'
+    expect(cli.registeredCommands['echo'].defaultOptions.string).to.equal "I am echoing the --string default"
+
+
+  it 'executeCommand - should execute the hello-world command', ->
+    process.argv = ['node', 'main.js', 'hello-world']
+    cli.executeCommand()
+    chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
+
+
+  it 'executeCommand - should execute the echo command with the default string', ->
+    process.argv = ['node', 'main.js', 'echo']
+    cli.executeCommand()
+    chai.assert logSpy.calledWith "I am echoing the --string default"
+
+
+  it 'executeCommand - should execute the echo command with a provided string', ->
+    process.argv = ['node', 'main.js', 'echo', '--string', 'I am echoing this string']
+    cli.executeCommand()
+    chai.assert logSpy.calledWith "I am echoing this string"
+
+
+  it 'executeCommand - should use Meteor.settings.commandLine, if it exists', ->
+    process.argv = processArgv
+    Meteor.settings.commandLine = 'hello-world'
+    cli.executeCommand()
+    chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
+    expect(process.argv[0]).to.equal 'node'
+    expect(process.argv[1]).to.equal 'main.js'
+    expect(process.argv[2]).to.equal 'hello-world'
+
+
+  it 'executeCommand - should fail if no command was provided', ->
+    process.argv = ['node', 'main.js']
     expect(CLI.executeCommand).to.throw(Error)
 
 
-  it 'CLI.executeCommand - should put Meteor.settings.commandLine in process.argv', ->
-    CLI.executeCommand()
-    expectedArray = Meteor.settings.commandLine.split(" ")
-    expectedArray.unshift(" ")
-    expectedArray.unshift(" ")
-    expect(process.argv).to.be.eql(expectedArray)
-
-
-  it 'CLI.executeCommand - should fail if command name is not present', ->
-    Meteor.settings.commandLine = "--opt2"
+  it 'executeCommand - should fail if command is not registered', ->
+    process.argv = ['node', 'main.js', 'not-registered']
     expect(CLI.executeCommand).to.throw(Error)
-
-
-  it 'CLI.executeCommand - should fail if the command is not registered', ->
-    CLI.registeredCommands = { }
-    expect(CLI.executeCommand).to.throw(Error)
-
-
-  it 'CLI.executeCommand - should call the command function with the options', ->
-    CLI.executeCommand()
-    expectedOptions = { _: [], command: "my-command", opt1: true, opt2: true }
-    expect(myCommandFunctionStub).to.have.been.calledWith(expectedOptions)
-
-
-  it 'CLI.registerCommand - should fail if any of the arguments is missing', ->
-    expect(CLI.registerCommand).to.throw(Error)
-
-
-  it 'CLI.registerCommand - should save the command into CLI.registeredCommands', ->
-    CLI.registeredCommands = { }
-
-    defaultOptions = { now: true }
-
-    CLI.registerCommand("my-command", myCommandFunctionStub, defaultOptions)
-
-    expect(CLI.registeredCommands).to.have.property("my-command")
-    expect(CLI.registeredCommands["my-command"].func).to.be.eql(myCommandFunctionStub)
-    expect(CLI.registeredCommands["my-command"].defaultOptions).to.be.eql(defaultOptions)
-

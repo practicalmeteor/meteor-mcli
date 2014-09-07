@@ -1,50 +1,48 @@
-class CLISingleton
+rc = Npm.require('rc')
 
-  instance = null
+@spacejamio ?= {}
 
-  class CLI
+class spacejamio.CLI
 
-    registeredCommands: { }
+  @instance: null
 
-    rc = Npm.require('rc')
-
-    executeCommand: ->
-      expect(Meteor.settings.commandLine, "Missing Meteor.settings.commandLine").to.exist
-
-      process.argv = Meteor.settings.commandLine.split(" ")
-      #following node convetions rc expects the two first process.argv to be node and the node program, and removes them from the conf object
-      #refer to http://nodejs.org/docs/latest/api/process.html#process_process_argv
-      #So we prepend two whitespaces
-      process.argv.unshift(" ")
-      process.argv.unshift(" ")
-
-      opts = rc('meteor-cli', { })
-
-      commandName = opts.command
-      expect(commandName, "--command is missing").to.be.a("string")
-
-      command = @registeredCommands[commandName]
-      expect(command, commandName + " is not a registered command").to.be.a("object")
-
-      defaultOptions = command.defaultOptions
-
-      opts = rc('meteor-cli', defaultOptions)
-
-      try
-        command.func opts
-      catch error
-        console.log error
-        process.exit 1
-
-
-    registerCommand: (name, func, defaultOptions = { }) ->
-      expect(name, "command name is missing").to.be.a("string")
-      expect(func, "command function is missing").to.be.a("function")
-      expect(defaultOptions, "command defaultOptions is not an object").to.be.a("object")
-
-      @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
+  registeredCommands: { }
 
   @get:->
-    instance ?= new CLI()
+    spacejamio.CLI.instance ?= new CLI()
 
-@CLI = CLISingleton.get()
+  executeCommand: ->
+
+    commandLine = Meteor?.settings?.commandLine
+
+    if commandLine
+      process.argv = Meteor.settings.commandLine.split(" ")
+      # In node, the first arg is node and the second the name of the .js file to execute, which in the case of
+      # meteor is main.js
+      process.argv.unshift("main.js")
+      process.argv.unshift("node")
+
+      # THe first arg after is always the name of the command to execute.
+
+    expect(process.argv, "No command specified").to.to.have.length.above(2)
+
+    commandName = process.argv[2]
+
+    command = @registeredCommands[commandName]
+    expect(command, "#{commandName} is not a registered cli command").to.to.be.an 'object'
+
+    opts = rc(commandName.replace('-', '_').toUpperCase(), command.defaultOptions)
+
+    command.func opts
+
+
+  # Note: defaultOptions will be mutated by actual command line options.
+  registerCommand: (name, func, defaultOptions = {}) ->
+    expect(name, "command name is missing").to.be.a("string")
+    expect(func, "command function is missing").to.be.a("function")
+    expect(defaultOptions, "command defaultOptions is not an object").to.be.a("object")
+
+    @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
+
+
+@CLI = spacejamio.CLI.get()
