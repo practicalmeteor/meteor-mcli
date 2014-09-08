@@ -17,16 +17,18 @@ class spacejamio.CLI
 
     if commandLine
       process.argv = Meteor.settings.commandLine.split(" ")
-      # In node, the first arg is node and the second the name of the .js file to execute, which in the case of
-      # meteor is main.js
+      # In a meteor bundle, the first arg is node, the 2nd main.js, and the 3rd program.json
+      process.argv.unshift("program.json")
       process.argv.unshift("main.js")
       process.argv.unshift("node")
 
+    console.log process.argv.join(' ')
+
       # THe first arg after is always the name of the command to execute.
 
-    expect(process.argv, "No command specified").to.to.have.length.above(2)
+    expect(process.argv, "No command specified").to.to.have.length.above(3)
 
-    commandName = process.argv[2]
+    commandName = process.argv[3]
 
     command = @registeredCommands[commandName]
     expect(command, "#{commandName} is not a registered cli command").to.to.be.an 'object'
