@@ -32,9 +32,6 @@ describe "CLITest", ->
     # We're cloning because rc mutates it's objects
 
 
-  afterEach ->
-
-
   it 'registerCommand - should have hello-world and echo registered', ->
     expect(cli.registeredCommands['hello-world']).to.be.an 'object'
     expect(cli.registeredCommands['hello-world']).to.be.to.have.keys ['func', 'defaultOptions']
@@ -52,19 +49,19 @@ describe "CLITest", ->
 
 
   it 'executeCommand - should execute the hello-world command', ->
-    process.argv = ['node', 'main.js', 'hello-world']
+    process.argv = ['node', 'main.js', 'program-json', 'hello-world']
     cli.executeCommand()
     chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
 
 
   it 'executeCommand - should execute the echo command with the default string', ->
-    process.argv = ['node', 'main.js', 'echo']
+    process.argv = ['node', 'main.js', 'program-json', 'echo']
     cli.executeCommand()
     chai.assert logSpy.calledWith "I am echoing the --string default"
 
 
   it 'executeCommand - should execute the echo command with a provided string', ->
-    process.argv = ['node', 'main.js', 'echo', '--string', 'I am echoing this string']
+    process.argv = ['node', 'main.js', 'program-json', 'echo', '--string', 'I am echoing this string']
     cli.executeCommand()
     chai.assert logSpy.calledWith "I am echoing this string"
 
@@ -76,14 +73,15 @@ describe "CLITest", ->
     chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
     expect(process.argv[0]).to.equal 'node'
     expect(process.argv[1]).to.equal 'main.js'
-    expect(process.argv[2]).to.equal 'hello-world'
+    expect(process.argv[2]).to.equal 'program.json'
+    expect(process.argv[3]).to.equal 'hello-world'
 
 
   it 'executeCommand - should fail if no command was provided', ->
-    process.argv = ['node', 'main.js']
+    process.argv = ['node', 'main.js', 'program-json']
     expect(CLI.executeCommand).to.throw(Error)
 
 
   it 'executeCommand - should fail if command is not registered', ->
-    process.argv = ['node', 'main.js', 'not-registered']
+    process.argv = ['node', 'main.js', 'program-json', 'not-registered']
     expect(CLI.executeCommand).to.throw(Error)
