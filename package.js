@@ -10,12 +10,13 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
-  api.use(["coffeescript","spacejamio:chai@0.1.6"], "server");
+  api.use(["coffeescript", "underscore", "spacejamio:chai"], "server");
 
+  api.addFiles("MeteorNoops.coffee");
   api.add_files("CLI.coffee", "server");
 });
 
 Package.on_test(function(api) {
-  api.use(['underscore', "coffeescript", "spacejamio:chai@0.1.6", "spacejamio:sinon@0.1.6", "spacejamio:munit@0.2.1", "meteor-cli"]);
+  api.use(['underscore', "coffeescript", "spacejamio:munit", "spacejamio:cli"]);
   api.add_files("tests/CLITest.coffee", "server")
 });
