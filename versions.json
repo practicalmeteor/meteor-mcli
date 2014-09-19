@@ -1,0 +1,23 @@
+{
+  "dependencies": [
+    [
+      "coffeescript",
+      "1.0.3"
+    ],
+    [
+      "meteor",
+      "1.1.0"
+    ],
+    [
+      "spacejamio:chai",
+      "0.1.6"
+    ],
+    [
+      "underscore",
+      "1.0.0"
+    ]
+  ],
+  "pluginDependencies": [],
+  "toolVersion": "meteor-tool@1.0.31",
+  "format": "1.0"
+}
