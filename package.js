@@ -19,6 +19,6 @@ Package.on_use(function (api, where) {
 });
 
 Package.on_test(function(api) {
-  api.use(['underscore', "coffeescript", "spacejamio:munit", "spacejamio:cli"], 'server');
+  api.use(["coffeescript", "spacejamio:cli", "spacejamio:munit"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });
