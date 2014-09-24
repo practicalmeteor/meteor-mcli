@@ -1,5 +1,5 @@
 Npm.depends({
-    'rc': '0.4.0'
+    'rc': '0.5.1'
 });
 
 Package.describe({
@@ -12,7 +12,7 @@ Package.describe({
 Package.on_use(function (api, where) {
   api.versionsFrom('0.9.0');
 
-  api.use(["coffeescript", "underscore", "spacejamio:chai"], "server");
+  api.use(["coffeescript", "underscore", "logging", "spacejamio:chai"], "server");
 
   api.addFiles("MeteorNoops.coffee", 'server');
   api.add_files("CLI.coffee", "server");
