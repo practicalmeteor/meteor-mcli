@@ -49,19 +49,27 @@ describe "CLITest", ->
 
 
   it 'executeCommand - should execute the hello-world command', ->
-    process.argv = ['node', 'main.js', 'program-json', 'hello-world']
+    process.argv = ['node', 'main.js', 'program.json', 'hello-world']
     cli.executeCommand()
     chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
 
 
+  it 'executeCommand - should remove program.json and the command name from process.argv', ->
+    process.argv = ['node', 'main.js', 'program.json', 'hello-world']
+    cli.executeCommand()
+    expect(process.argv).to.have.length 2
+    expect(process.argv[0]).to.equal 'node'
+    expect(process.argv[1]).to.equal 'main.js'
+
+
   it 'executeCommand - should execute the echo command with the default string', ->
-    process.argv = ['node', 'main.js', 'program-json', 'echo']
+    process.argv = ['node', 'main.js', 'program.json', 'echo']
     cli.executeCommand()
     chai.assert logSpy.calledWith "I am echoing the --string default"
 
 
   it 'executeCommand - should execute the echo command with a provided string', ->
-    process.argv = ['node', 'main.js', 'program-json', 'echo', '--string', 'I am echoing this string']
+    process.argv = ['node', 'main.js', 'program.json', 'echo', '--string', 'I am echoing this string']
     cli.executeCommand()
     chai.assert logSpy.calledWith "I am echoing this string"
 
@@ -73,8 +81,7 @@ describe "CLITest", ->
     chai.assert logSpy.calledWith "Hello world from spacejamio:cli"
     expect(process.argv[0]).to.equal 'node'
     expect(process.argv[1]).to.equal 'main.js'
-    expect(process.argv[2]).to.equal 'program.json'
-    expect(process.argv[3]).to.equal 'hello-world'
+    expect(process.argv).to.have.length 2
 
 
   it 'executeCommand - should fail if no command was provided', ->
