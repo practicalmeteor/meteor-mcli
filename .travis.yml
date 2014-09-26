@@ -13,4 +13,3 @@ branches:
   only:
     - master
     - devel
-    - publish-cli
