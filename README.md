@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/spacejamio/meteor-munit.svg?branch=master)](https://travis-ci.org/spacejamio/meteor-munit)
+[![Build Status](https://travis-ci.org/spacejamio/meteor-cli.svg?branch=master)](https://travis-ci.org/spacejamio/meteor-cli)
 spacejamio:cli
 --------------
 # Overview
