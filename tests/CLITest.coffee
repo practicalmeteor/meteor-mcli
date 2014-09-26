@@ -74,6 +74,13 @@ describe "CLITest", ->
     chai.assert logSpy.calledWith "I am echoing this string"
 
 
+  it 'executeCommand - should execute the echo command with a string defined in env', ->
+    process.argv = ['node', 'main.js', 'program.json', 'echo']
+    process.env.echo_string = 'I am echoing an env string'
+    cli.executeCommand()
+    chai.assert logSpy.calledWith "I am echoing an env string"
+
+
   it 'executeCommand - should use Meteor.settings.commandLine, if it exists', ->
     process.argv = processArgv
     Meteor.settings.commandLine = 'hello-world'

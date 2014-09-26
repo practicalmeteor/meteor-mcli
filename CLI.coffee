@@ -41,7 +41,7 @@ class spacejamio.CLI
     # Remove the command, so rc doesn't interpret it as a command line argument.
     process.argv.splice(2, 1)
 
-    opts = rc(commandName.replace('-', '_').toUpperCase(), command.defaultOptions)
+    opts = rc(commandName.replace('-', '_'), command.defaultOptions)
 
     # Execute the registered command
     command.func opts
