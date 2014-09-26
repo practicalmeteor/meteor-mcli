@@ -1,11 +1,5 @@
 #!/bin/bash -e
 
-if [ -z "$MONGO_URL" ]
-then
-  echo "Warning: MONGO_URL is not set. Setting MONGO_URL to an example mongohq sandbox database."
-  export MONGO_URL="mongodb://spacejamio:spacejam@kahana.mongohq.com:10012/todos"
-fi
-
 if [ -z "$1" ]; then
   >&2 echo "Error: you need to provide at least a command name."
   exit 1
