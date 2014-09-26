@@ -1,7 +1,7 @@
 // If called without --prefix, the default prefix will be used.
 // To print to stderr, set '--stderr=true'
 var defaultOptions = {
-  prefix: "spacejamio:cli - ",
+  prefix: "spacejamio:mcli - ",
   stderr: false
 };
 

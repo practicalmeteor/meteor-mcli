@@ -20,6 +20,6 @@ ordered-dict@1.0.0
 random@1.0.0
 retry@1.0.0
 spacejamio:chai@1.0.0
-spacejamio:cli@0.2.0
+spacejamio:mcli@1.0.0
 tracker@1.0.2
 underscore@1.0.0

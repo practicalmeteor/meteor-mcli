@@ -4,8 +4,8 @@ Npm.depends({
 
 Package.describe({
   summary: "Package for creating cli programs with meteor",
-  name: "spacejamio:cli",
-  version: "0.2.0",
+  name: "spacejamio:mcli",
+  version: "1.0.0",
   git: "https://github.com/spacejamio/meteor-cli.git"
 });
 
@@ -19,6 +19,6 @@ Package.on_use(function (api, where) {
 });
 
 Package.on_test(function(api) {
-  api.use(["coffeescript", "spacejamio:cli", "spacejamio:munit"], 'server');
+  api.use(["coffeescript", "spacejamio:mcli", "spacejamio:munit"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });
