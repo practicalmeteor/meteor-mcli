@@ -1,0 +1,7 @@
+#!/bin/bash -xe
+
+sudo apt-get -y install jq
+sudo curl -o /usr/local/bin/mcli https://raw.githubusercontent.com/spacejamio/meteor-cli/master/bin/mcli
+sudo chmod 555 /usr/local/bin/mcli
+sudo curl -o /usr/local/bin/mcli-bundle https://raw.githubusercontent.com/spacejamio/meteor-cli/master/bin/mcli-bundle
+sudo chmod 555 /usr/local/bin/mcli-bundle
