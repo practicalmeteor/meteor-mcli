@@ -14,7 +14,7 @@ Package.describe({
 Package.on_use(function (api, where) {
   api.versionsFrom('0.9.0');
 
-  api.use(["coffeescript", "underscore", "spacejamio:chai"], "server");
+  api.use(["coffeescript", "underscore", "spacejamio:chai@1.0.0"], "server");
 
   api.addFiles("MeteorNoops.coffee", 'server');
   api.add_files("CLI.coffee", "server");
@@ -24,6 +24,6 @@ Package.on_use(function (api, where) {
 
 
 Package.on_test(function(api) {
-  api.use(["coffeescript", "spacejamio:mcli", "spacejamio:munit"], 'server');
+  api.use(["coffeescript", "spacejamio:mcli", "spacejamio:munit@1.0.0"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });
