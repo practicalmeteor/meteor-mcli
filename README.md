@@ -63,7 +63,7 @@ Or, with a meteor settings file:
 mcli --settings my-settings.json hello-world --stderr=true
 ```
 
-You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](starter-mcli-app/server) command line program.
+You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](https://github.com/spacejamio/meteor-mcli/tree/master/starter-mcli-app/server) command line program.
 
 ## Command Line Options, Defaults and Arguments
 
@@ -79,7 +79,7 @@ export hello_world_stderr=true
 
 Note that you will need to replace '-' in command names with '_' in your environment variables.
 
-Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](starter-mcli-app/EchoCommand.js).
+Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](https://github.com/spacejamio/meteor-mcli/blob/master/starter-mcli-app/server/EchoCommand.js).
 
 ## Executing commands in a meteor build
 
@@ -103,7 +103,7 @@ mcli-bundle --settings my-settings.json hello-world --stderr=true
 
 In this case, mcli-bundle will automatically set the METEOR_SETTINGS environment variable to the contents of your settings file.
 
-## The hard way (i.e. creating your meteor cli app from scratch)
+## The hard way (i.e. creating your meteor mcli app from scratch)
 
 - Create your meteor app the standard way.
 
@@ -127,7 +127,7 @@ meteor add application-configuration
 meteor add spacejamio:mcli
 ```
 
-- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](starter-mcli-app/server/main.js).
+- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](https://github.com/spacejamio/meteor-mcli/blob/master/starter-mcli-app/server/main.js).
 
 - Install the jq json command line processor:
 
@@ -147,7 +147,7 @@ curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install
 Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line to Meteor.settings.commandLine. The spacejamio:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
 
 ## License
-[MIT](LICENSE.txt)
+[MIT](https://github.com/spacejamio/meteor-mcli/blob/master/LICENSE.txt)
 
 ## Contributions
-Are more than welcome. Would be nice to have an a meteor cli app scaffolding tool, among others.
+Are more than welcome. Would be nice to have a meteor mcli app scaffolding tool, among others.
