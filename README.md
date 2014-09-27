@@ -18,13 +18,13 @@ sudo apt-get install -y jq
 
 curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install-starter-kit.sh | bash
 
-cd starter-cli-app
+cd starter-mcli-app
 
 # Run the hello-world command in the meteor command line program.
 mcli hello-world
 ```
 
-The starter-cli-app is a fully functional meteor command line program that you should use as a base.
+The starter-mcli-app is a fully functional meteor command line program that you should use as a base.
 
 ## API
 
@@ -63,7 +63,7 @@ Or, with a meteor settings file:
 mcli --settings my-settings.json hello-world --stderr=true
 ```
 
-You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-cli-app](starter-cli-app/server) command line program.
+You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](starter-mcli-app/server) command line program.
 
 ## Command Line Options, Defaults and Arguments
 
@@ -79,7 +79,7 @@ export hello_world_stderr=true
 
 Note that you will need to replace '-' in command names with '_' in your environment variables.
 
-Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](starter-cli-app/EchoCommand.js).
+Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](starter-mcli-app/EchoCommand.js).
 
 ## Executing commands in a meteor build
 
@@ -127,7 +127,7 @@ meteor add application-configuration
 meteor add spacejamio:mcli
 ```
 
-- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](starter-cli-app/server/main.js).
+- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](starter-mcli-app/server/main.js).
 
 - Install the jq json command line processor:
 
