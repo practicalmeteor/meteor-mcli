@@ -1,6 +1,6 @@
 CLI.registerCommand('hello-world', function(options) {
   if(options.stderr)
-    console.error(options.prefix + string);
+    console.error("Hello world from spacejamio:mcli!");
   else
-    console.info(options.prefix + string);
+    console.info("Hello world from spacejamio:mcli!");
 });
