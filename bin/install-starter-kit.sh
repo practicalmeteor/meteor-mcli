@@ -1,6 +1,5 @@
 #!/bin/bash -xe
 
-sudo apt-get -y install jq
 sudo curl -L -o /tmp/meteor-cli.tar.gz https://github.com/spacejamio/meteor-cli/archive/master.tar.gz
 sudo tar xf /tmp/meteor-cli.tar.gz -C /tmp
 sudo mv /tmp/meteor-cli-master/bin/mcli /tmp/meteor-cli-master/bin/mcli-bundle /usr/local/bin
