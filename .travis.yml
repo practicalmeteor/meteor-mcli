@@ -7,7 +7,7 @@ before_install:
   - "npm install -g coffee-script"
   - "npm install -g spacejam"
 
-script: "./bin/test-package.sh"
+script: "./bin/test-all.sh"
 
 branches:
   only:
