@@ -3,7 +3,7 @@ spacejamio:mcli
 --------------
 ## Overview
 
-A meteor package and command line tools for creating and running command line programs with meteor.
+A meteor package and command line tools for creating and running command line / cli programs with meteor.
 
 ## Incentive
 

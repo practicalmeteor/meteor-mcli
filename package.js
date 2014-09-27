@@ -4,7 +4,7 @@ Npm.depends({
 
 
 Package.describe({
-  summary: "A package and tools for creating and running command line programs with meteor.",
+  summary: "A package and tools for creating and running command line / cli programs with meteor.",
   name: "spacejamio:mcli",
   version: "1.0.0",
   git: "https://github.com/spacejamio/meteor-mcli.git"
