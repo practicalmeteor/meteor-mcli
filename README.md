@@ -81,6 +81,10 @@ Note that you will need to replace '-' in command names with '_' in your environ
 
 Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](https://github.com/spacejamio/meteor-mcli/blob/master/starter-mcli-app/server/EchoCommand.js).
 
+## MongoDB
+
+Unfortunately, mcli doesn't know how to start or connect to the internal meteor mongodb database before executing your command just yet (pull requests would be appreciated for that). We recommend you create a free mongodb sandbox database with [mongohq](https://www.compose.io/) (compose.io) and use it for both your meteor app and meteor mcli app during development (that's what we do).
+
 ## Executing commands in a meteor build
 
 You can execute your commands in a meteor build by appending them to the standard meteor node command line, i.e.
@@ -150,4 +154,10 @@ Since in local development mode, meteor cannot accept command line arguments, th
 [MIT](https://github.com/spacejamio/meteor-mcli/blob/master/LICENSE.txt)
 
 ## Contributions
-Are more than welcome. Would be nice to have a meteor mcli app scaffolding tool, among others.
+Are more than welcome. Would be nice to:
+ 
+- Connect to the internal meteor mongodb database of a running meteor app.
+
+- Start and stop the internal meteor mongodb database, if a meteor app is not running.
+
+- Have a meteor mcli app scaffolding tool.
