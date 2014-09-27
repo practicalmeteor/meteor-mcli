@@ -27,3 +27,4 @@ Package.on_test(function(api) {
   api.use(["coffeescript", "spacejamio:mcli", "spacejamio:munit@1.0.0"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });
+
