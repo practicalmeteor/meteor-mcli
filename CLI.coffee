@@ -56,4 +56,4 @@ class spacejamio.CLI
     @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
 
 
-@CLI = spacejamio.CLI.get()
+CLI = spacejamio.CLI.get()
