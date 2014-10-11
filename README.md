@@ -150,6 +150,10 @@ curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install
 
 Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line to Meteor.settings.commandLine. The spacejamio:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
 
+## Changelog
+
+[CHANGELOG](https://github.com/spacejamio/meteor-mcli/blob/master/CHANGELOG.md)
+
 ## License
 [MIT](https://github.com/spacejamio/meteor-mcli/blob/master/LICENSE.txt)
 
