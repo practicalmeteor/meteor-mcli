@@ -1,3 +1,14 @@
+## 1.1.2
+
+* Update changelog for 1.1.1 and 1.1.2
+
+## 1.1.1
+
+* Rename package to practicalmeteor:mcli
+* Update starter-mcli-app to meteor 1.0
+* Update munit and chai dependencies to latest practicalmeteor ones
+* Add logging using practicalmeteor:loglevel
+
 ## 1.1.0
 
 * Update required meteor version to 0.9.3
