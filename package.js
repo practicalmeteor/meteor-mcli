@@ -18,7 +18,7 @@ Package.onUse(function (api) {
     "coffeescript",
     "underscore",
     "practicalmeteor:chai@1.9.2_3",
-    "practicalmeteor:loglevel@1.1.0_2"
+    "practicalmeteor:loglevel@1.1.0_3"
   ], "server");
 
   api.addFiles(["src/log.js"], 'server');
