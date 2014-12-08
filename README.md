@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/spacejamio/meteor-mcli.svg?branch=master)](https://travis-ci.org/spacejamio/meteor-mcli)
-spacejamio:mcli
+[![Build Status](https://travis-ci.org/practicalmeteor/meteor-mcli.svg?branch=master)](https://travis-ci.org/practicalmeteor/meteor-mcli)
+practicalmeteor:mcli
 --------------
 ## Overview
 
@@ -16,7 +16,7 @@ To be able to reuse the same code of your meteor app in your command line progra
 # Replace the first line with your linux's distribution way of installing packages.
 sudo apt-get install -y jq
 
-curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install-starter-kit.sh | bash
+curl https://raw.githubusercontent.com/practicalmeteor/meteor-mcli/master/bin/install-starter-kit.sh | bash
 
 cd starter-mcli-app
 
@@ -42,9 +42,9 @@ var defaultOptions = { stderr: false };
 
 var helloWorld = function(options) {
   if(options.stderr)
-    console.error("Hello world from spacejamio:mcli!");
+    console.error("Hello world from practicalmeteor:mcli!");
   else
-    console.info("Hello world from spacejamio:mcli!");
+    console.info("Hello world from practicalmeteor:mcli!");
 };
 
 CLI.registerCommand('hello-world', helloWorld, defaultOptions);
@@ -63,11 +63,11 @@ Or, with a meteor settings file:
 mcli --settings my-settings.json hello-world --stderr=true
 ```
 
-You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](https://github.com/spacejamio/meteor-mcli/tree/master/starter-mcli-app/server) command line program.
+You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](https://github.com/practicalmeteor/meteor-mcli/tree/master/starter-mcli-app/server) command line program.
 
 ## Command Line Options, Defaults and Arguments
 
-spacejamio:mcli uses the excellent [rc](https://www.npmjs.org/package/rc) npm command line parser and configurator.
+practicalmeteor:mcli uses the excellent [rc](https://www.npmjs.org/package/rc) npm command line parser and configurator.
 
 When you register your command, you provide a json object with default values only for command line options you want default values for. When your command is called, it will get an options json object that will include all the options specified on the command line, as well as defaults you specified for options that were not included.
 
@@ -79,7 +79,7 @@ export hello_world_stderr=true
 
 Note that you will need to replace '-' in command names with '_' in your environment variables.
 
-Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](https://github.com/spacejamio/meteor-mcli/blob/master/starter-mcli-app/server/EchoCommand.js).
+Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](https://github.com/practicalmeteor/meteor-mcli/blob/master/starter-mcli-app/server/EchoCommand.js).
 
 ## MongoDB
 
@@ -127,11 +127,11 @@ meteor add mongo
 # Add application-configuration to access 3rd party services
 meteor add application-configuration
 
-# Add spacejamio:mcli
-meteor add spacejamio:mcli
+# Add practicalmeteor:mcli
+meteor add practicalmeteor:mcli
 ```
 
-- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](https://github.com/spacejamio/meteor-mcli/blob/master/starter-mcli-app/server/main.js).
+- meteor apps expect a main function which is the entry point to the app. The meteor webapp package provides just that. In a cli program, you will need to create your own main function that calls CLI.executeCommand, as in [here](https://github.com/practicalmeteor/meteor-mcli/blob/master/starter-mcli-app/server/main.js).
 
 - Install the jq json command line processor:
 
@@ -143,19 +143,19 @@ sudo apt-get install -y jq
 - Install the mcli and mcli-bundle tools:
 
 ```
-curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install-mcli.sh | bash
+curl https://raw.githubusercontent.com/practicalmeteor/meteor-mcli/master/bin/install-mcli.sh | bash
 ```
 
 ## How it works
 
-Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line to Meteor.settings.commandLine. The spacejamio:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
+Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line to Meteor.settings.commandLine. The practicalmeteor:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
 
 ## Changelog
 
-[CHANGELOG](https://github.com/spacejamio/meteor-mcli/blob/master/CHANGELOG.md)
+[CHANGELOG](https://github.com/practicalmeteor/meteor-mcli/blob/master/CHANGELOG.md)
 
 ## License
-[MIT](https://github.com/spacejamio/meteor-mcli/blob/master/LICENSE.txt)
+[MIT](https://github.com/practicalmeteor/meteor-mcli/blob/master/LICENSE.txt)
 
 ## Contributions
 Are more than welcome. Would be nice to:

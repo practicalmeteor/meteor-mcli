@@ -2,7 +2,7 @@ Stubs = Munit.stubs
 Spies = Munit.spies
 
 
-describe "CLITest", ->
+describe "CLI", ->
 
   cli = null
   processArgv = null
@@ -22,9 +22,9 @@ describe "CLITest", ->
     console.info 'beforeEach'
     logSpy = Spies.create "logSpy", console, 'log'
 
-    cli = new spacejamio.CLI()
+    cli = new practical.CLI()
     cli.registerCommand 'hello-world', (opts) ->
-      console.log "Hello world from spacejamio:mcli"
+      console.log "Hello world from practicalmeteor:mcli"
 
     cli.registerCommand 'echo', (opts) ->
       console.log opts.string
@@ -51,7 +51,7 @@ describe "CLITest", ->
   it 'executeCommand - should execute the hello-world command', ->
     process.argv = ['node', 'main.js', 'program.json', 'hello-world']
     cli.executeCommand()
-    chai.assert logSpy.calledWith "Hello world from spacejamio:mcli"
+    chai.assert logSpy.calledWith "Hello world from practicalmeteor:mcli"
 
 
   it 'executeCommand - should remove program.json and the command name from process.argv', ->
@@ -85,7 +85,7 @@ describe "CLITest", ->
     process.argv = processArgv
     Meteor.settings.commandLine = 'hello-world'
     cli.executeCommand()
-    chai.assert logSpy.calledWith "Hello world from spacejamio:mcli"
+    chai.assert logSpy.calledWith "Hello world from practicalmeteor:mcli"
     expect(process.argv[0]).to.equal 'node'
     expect(process.argv[1]).to.equal 'main.js'
     expect(process.argv).to.have.length 2

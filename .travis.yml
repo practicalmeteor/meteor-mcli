@@ -4,12 +4,6 @@ node_js:
 
 before_install:
   - "curl https://install.meteor.com | /bin/sh"
-  - "npm install -g coffee-script"
   - "npm install -g spacejam"
 
 script: "./bin/test-mcli.sh"
-
-branches:
-  only:
-    - master
-    - devel

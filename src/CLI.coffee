@@ -1,17 +1,18 @@
 rc = Npm.require('rc')
 
-@spacejamio ?= {}
+@practical ?= {}
 
-class spacejamio.CLI
+class practical.CLI
 
   @instance: null
 
   registeredCommands: { }
 
   @get:->
-    spacejamio.CLI.instance ?= new CLI()
+    practical.CLI.instance ?= new CLI()
 
   executeCommand: ->
+    log.debug('CLI.executeCommand()')
 
     commandLine = Meteor?.settings?.commandLine
 
@@ -41,19 +42,24 @@ class spacejamio.CLI
     # Remove the command, so rc doesn't interpret it as a command line argument.
     process.argv.splice(2, 1)
 
-    opts = rc(commandName.replace('-', '_'), command.defaultOptions)
+    options = rc(commandName.replace('-', '_'), command.defaultOptions)
+
+    log.debug("Executing '#{commandName}' with options:\n", options)
 
     # Execute the registered command
-    command.func opts
+    command.func options
 
 
   # Note: defaultOptions will be mutated by actual command line options.
   registerCommand: (name, func, defaultOptions = {}) ->
+    log.debug("CLI.registerCommand()")
     expect(name, "command name is missing").to.be.a("string")
     expect(func, "command function is missing").to.be.a("function")
     expect(defaultOptions, "command defaultOptions is not an object").to.be.a("object")
 
+    log.debug("Registering '#{name}' with default options:\n", defaultOptions)
+
     @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
 
 
-CLI = spacejamio.CLI.get()
+CLI = practical.CLI.get()

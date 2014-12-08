@@ -16,7 +16,7 @@ mcli-bundle find-one --collection Todos
 cd ..
 mkdir -p tmp
 cd tmp
-curl https://raw.githubusercontent.com/spacejamio/meteor-mcli/master/bin/install-starter-kit.sh | bash
+curl https://raw.githubusercontent.com/practicalmeteor/meteor-mcli/$TRAVIS_COMMIT/bin/install-starter-kit.sh | bash
 if [ $(which mcli) != "/usr/local/bin/mcli" ]; then
   exit 1
 fi
