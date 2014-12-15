@@ -11,15 +11,34 @@ class practical.CLI
   @get:->
     practical.CLI.instance ?= new CLI()
 
+  constructor: ->
+    log.debug("NODE_ENV=#{process.env.NODE_ENV}")
+
+  # ['-o=val1', 'val12', '-o'] -> ['-o=val1 val2', '--opt2']
+  # ['--opt1=val1', 'val12', '--opt2'] -> ['--opt1=val11 va12', '--opt2']
+  # ['--opt1', ' val1', 'val12', '--opt2'] -> ['--opt1', 'va11 val2', '--opt2']
+  # ['--opt1', ' val', '--opt2=val2', 'arg1', 'arg2'] -> No change
+  commandLine2argv: (commandLine)->
+    argv = commandLine.split(" ")
+
+    for arg, i in argv
+      if _.startsWith(arg, '-')
+        return
+
+    argv.unshift("main.js")
+    argv.unshift("node")
+    process.argv = argv
+
+
   executeCommand: ->
-    log.debug('CLI.executeCommand()')
+    log.debug('CLI.executeCommand()', process.argv)
 
     commandLine = Meteor?.settings?.commandLine
 
     if commandLine
       # This is not a meteor bundle, commandLine was provided in Meteor.settings,
       # so we need to add 'node main.js' so rc will function properly.
-      process.argv = Meteor.settings.commandLine.split(" ")
+      process.argv = commandLine.split(" ")
       process.argv.unshift("main.js")
       process.argv.unshift("node")
     else
@@ -28,7 +47,7 @@ class practical.CLI
       expect(process.argv[2], "program.json was expected at process.argv[2]").to.equal 'program.json'
       process.argv.splice(2, 1)
 
-      # THe first arg after is always the name of the command to execute.
+    # THe first arg after is always the name of the command to execute.
 
     # Meteor._debug process.argv.join(' ')
 
