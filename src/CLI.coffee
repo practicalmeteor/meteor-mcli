@@ -19,11 +19,17 @@ class practical.CLI
   # ['--opt1', ' val1', 'val12', '--opt2'] -> ['--opt1', 'va11 val2', '--opt2']
   # ['--opt1', ' val', '--opt2=val2', 'arg1', 'arg2'] -> No change
   commandLine2argv: (commandLine)->
-    argv = commandLine.split(" ")
-
+    argv = commandLine.split(/(?=-+)/);
+    argv = argv.concat(argv.pop().split(" "));
     for arg, i in argv
-      if _.startsWith(arg, '-')
-        return
+      #Error trim of undefined (check reference change logic problem)
+      argv[i] = arg.trim()
+      argv[i++] = argv.splice(i,1) + argv[i] if argv[i]=="-"
+#    argv = commandLine.split(" ")
+#    console.log("Splited:", argv)
+#    for arg, i in argv
+#      if _.startsWith(arg, '-')
+#        return
 
     argv.unshift("main.js")
     argv.unshift("node")
@@ -36,11 +42,13 @@ class practical.CLI
     commandLine = Meteor?.settings?.commandLine
 
     if commandLine
+      console.log("Unchanged:",commandLine)
       # This is not a meteor bundle, commandLine was provided in Meteor.settings,
       # so we need to add 'node main.js' so rc will function properly.
-      process.argv = commandLine.split(" ")
-      process.argv.unshift("main.js")
-      process.argv.unshift("node")
+      @commandLine2argv(commandLine)
+      console.log("Result:", process.argv)
+      #process.argv.unshift("main.js")
+      #process.argv.unshift("node")
     else
       # In a meteor bundle, the first arg is node, the 2nd main.js, and the 3rd program.json
       # We need to remove program.json, so it will not be interpreted by rc as a command line argument.

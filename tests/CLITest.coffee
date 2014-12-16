@@ -99,3 +99,9 @@ describe "CLI", ->
   it 'executeCommand - should fail if command is not registered', ->
     process.argv = ['node', 'main.js', 'program-json', 'not-registered']
     expect(CLI.executeCommand).to.throw(Error)
+
+  it 'test', ->
+    process.argv = ['node', 'main.js', 'program-json', 'not-registered']
+    Meteor.settings.commandLine = "testcmd --opt1=1 --opt2 2 --dummy a b"
+    cli.executeCommand()
+
