@@ -20,7 +20,7 @@ class practical.CLI
     # if the command has options
     if parts[2]
       # Split each option
-      argv = parts[2].split(/(?=-+)/);
+      argv = parts[2].trim().split(/(?=-+)/);
       # Split last args
       argv = argv.concat(argv.pop().split(" "));
 
@@ -39,8 +39,7 @@ class practical.CLI
     argv.unshift("main.js")
     argv.unshift("node")
 
-    # removing empty elements before assign
-    process.argv = (item for item in argv when item)
+    process.argv = argv
 
 
   executeCommand: ->
