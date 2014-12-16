@@ -14,26 +14,33 @@ class practical.CLI
   constructor: ->
     log.debug("NODE_ENV=#{process.env.NODE_ENV}")
 
-  # ['-o=val1', 'val12', '-o'] -> ['-o=val1 val2', '--opt2']
-  # ['--opt1=val1', 'val12', '--opt2'] -> ['--opt1=val11 va12', '--opt2']
-  # ['--opt1', ' val1', 'val12', '--opt2'] -> ['--opt1', 'va11 val2', '--opt2']
-  # ['--opt1', ' val', '--opt2=val2', 'arg1', 'arg2'] -> No change
   commandLine2argv: (commandLine)->
-    argv = commandLine.split(/(?=-+)/);
-    argv = argv.concat(argv.pop().split(" "));
-    for arg, i in argv
-      #Error trim of undefined (check reference change logic problem)
-      argv[i] = arg.trim()
-      argv[i++] = argv.splice(i,1) + argv[i] if argv[i]=="-"
-#    argv = commandLine.split(" ")
-#    console.log("Splited:", argv)
-#    for arg, i in argv
-#      if _.startsWith(arg, '-')
-#        return
+    # Separate command from options (in case it has a dash)
+    parts = commandLine.split(/^([\w\-]+)/)
+    # if the command has options
+    if parts[2]
+      # Split each option
+      argv = parts[2].split(/(?=-+)/);
+      # Split last args
+      argv = argv.concat(argv.pop().split(" "));
 
+      len = argv.length
+      for i in [0...len] by 1
+        # in case the option has 2 dashes they must be join
+        argv[i] = argv.splice(i,1) + argv[i] if argv[i]=="-"
+        # removing space of options
+        argv[i] = argv[i].trim()
+        # resetting length
+        len = argv.length
+
+    else argv = []
+    # adding command and default keywords
+    argv.unshift(parts[1])
     argv.unshift("main.js")
     argv.unshift("node")
-    process.argv = argv
+
+    # removing empty elements before assign
+    process.argv = (item for item in argv when item)
 
 
   executeCommand: ->
