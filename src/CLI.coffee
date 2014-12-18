@@ -23,20 +23,21 @@ class practical.CLI
     # if the command has options
     if parts[2]
       # Split each option
-      argv = parts[2].trim().split(/(?=-+)/);
       # Result: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1 arg1 arg2"]
       # This separates double dash too but they are joined later.
+      argv = parts[2].trim().split(/(?=-+)/);
 
       # This splits the args of command from the last element of the array:
-      argv = argv.concat(argv.pop().split(" "));
       # After concat we have: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1", "arg1", "arg2"]
+      argv = argv.concat(argv.pop().split(" "));
 
       len = argv.length
+      # We need the by 1 because the length changes due to splices, so if the length is being reduced it doesn't increment
       for i in [0...len] by 1
-        # in case the option has 2 dashes they must be join
-        argv[i] = argv.splice(i,1) + argv[i] if argv[i]=="-"
+        # in case the option has 2 dashes they must be joined back
         # Iterating the array of options we have to join the dashes only in case of double dash option
         # Converting: ["-","-opt1"] Into: ["--opt1"]
+        argv[i] = argv.splice(i,1) + argv[i] if argv[i] is "-"
 
         # removing space of options
         argv[i] = argv[i].trim()
@@ -46,7 +47,7 @@ class practical.CLI
 
     else argv = [] # If command doesn't have options...
 
-    # Adding command and default keywords
+    # Adding command back
     argv.unshift(parts[1])
     # This is not a meteor bundle, commandLine was provided in Meteor.settings,
     # so we need to add 'node main.js' so rc will function properly.
