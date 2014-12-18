@@ -7,7 +7,9 @@ describe "CLI", ->
   cli = null
   processArgv = null
   logSpy = null
-
+  actualOptions = null
+  parseOptionsCommand = (options)=>
+    actualOptions = options
 
   beforeAll ->
     processArgv = process.argv
@@ -19,6 +21,7 @@ describe "CLI", ->
 
   beforeEach ->
     Spies.restoreAll()
+    actualOptions = null
     console.info 'beforeEach'
     logSpy = Spies.create "logSpy", console, 'log'
 
@@ -29,7 +32,8 @@ describe "CLI", ->
     cli.registerCommand 'echo', (opts) ->
       console.log opts.string
     , _.clone({string: "I am echoing the --string default"})
-    # We're cloning because rc mutates it's objects
+
+    cli.registerCommand 'parse-options', parseOptionsCommand
 
 
   it 'registerCommand - should have hello-world and echo registered', ->
