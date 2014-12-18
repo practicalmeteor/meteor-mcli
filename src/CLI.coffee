@@ -15,27 +15,41 @@ class practical.CLI
     log.debug("NODE_ENV=#{process.env.NODE_ENV}")
 
   commandLine2argv: (commandLine)->
+    # Having commandLine: "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2"
     # Separate command from options (in case it has a dash)
     parts = commandLine.split(/^([\w\-]+)/)
+    # Now we have: ['', 'test-cmd', '--opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2']
+
     # if the command has options
     if parts[2]
       # Split each option
       argv = parts[2].trim().split(/(?=-+)/);
-      # Split last args
+      # Result: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1 arg1 arg2"]
+      # This separates double dash too but they are joined later.
+
+      # This splits the args of command from the last element of the array:
       argv = argv.concat(argv.pop().split(" "));
+      # After concat we have: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1", "arg1", "arg2"]
 
       len = argv.length
       for i in [0...len] by 1
         # in case the option has 2 dashes they must be join
         argv[i] = argv.splice(i,1) + argv[i] if argv[i]=="-"
+        # Iterating the array of options we have to join the dashes only in case of double dash option
+        # Converting: ["-","-opt1"] Into: ["--opt1"]
+
         # removing space of options
         argv[i] = argv[i].trim()
-        # resetting length
+        
+        # Resetting length because using the splice above it changes.
         len = argv.length
 
-    else argv = []
-    # adding command and default keywords
+    else argv = [] # If command doesn't have options...
+
+    # Adding command and default keywords
     argv.unshift(parts[1])
+    # This is not a meteor bundle, commandLine was provided in Meteor.settings,
+    # so we need to add 'node main.js' so rc will function properly.
     argv.unshift("main.js")
     argv.unshift("node")
 
@@ -48,13 +62,7 @@ class practical.CLI
     commandLine = Meteor?.settings?.commandLine
 
     if commandLine
-      console.log("Unchanged:",commandLine)
-      # This is not a meteor bundle, commandLine was provided in Meteor.settings,
-      # so we need to add 'node main.js' so rc will function properly.
       @commandLine2argv(commandLine)
-      console.log("Result:", process.argv)
-      #process.argv.unshift("main.js")
-      #process.argv.unshift("node")
     else
       # In a meteor bundle, the first arg is node, the 2nd main.js, and the 3rd program.json
       # We need to remove program.json, so it will not be interpreted by rc as a command line argument.

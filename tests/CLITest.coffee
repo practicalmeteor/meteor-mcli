@@ -104,57 +104,41 @@ describe "CLI", ->
 
   it 'commandLine2argv - should parse simple command with no options', ->
     cmd = "testcmd"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd'])
 
   it 'commandLine2argv - should parse simple command with args', ->
     cmd = "testcmd arg1 arg2"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd','arg1','arg2'])
 
   it 'commandLine2argv - should parse a command with options having 2 dashes', ->
     cmd = "testcmd --opt1=val1 --opt2 --opt3 val1 val2 --opt4"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','--opt3 val1 val2','--opt4'])
 
   it 'commandLine2argv - should parse a command with options having 1 dash', ->
     cmd = "testcmd -opt1=val1 -opt2 -opt3 val1 val2 -opt4"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd','-opt1=val1','-opt2','-opt3 val1 val2','-opt4'])
 
   it 'commandLine2argv - should parse a command with options having 1 and 2 dashes', ->
     cmd = "testcmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4'])
 
   it 'commandLine2argv - should parse a command with options and args', ->
     cmd = "testcmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4 arg1 arg2"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4','arg1','arg2'])
 
   it 'commandLine2argv - should parse a command with dashes in name', ->
     cmd = "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4 arg1 arg2"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','test-cmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4','arg1','arg2'])
 
   it 'commandLine2argv - should parse a very complex command', ->
     cmd = "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2"
-    console.log("Command:", cmd)
     result = cli.commandLine2argv(cmd)
-    console.log("Result:", result)
     expect(result).to.deep.equal(['node','main.js','test-cmd','--opt1=val1','--opt2','-opt3 val1 val2','--opt4=val1 val2 val3','-opt5=val1','arg1','arg2'])
 
