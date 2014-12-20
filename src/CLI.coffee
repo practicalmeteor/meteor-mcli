@@ -15,45 +15,17 @@ class practical.CLI
     log.debug("NODE_ENV=#{process.env.NODE_ENV}")
 
   commandLine2argv: (commandLine)->
-    # Having commandLine: "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2"
-    # Separate command from options (in case it has a dash)
-    parts = commandLine.split(/^([\w\-]+)/)
-    # Now we have: ['', 'test-cmd', '--opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2']
+    # Split options by space or surrounded by quotes
+    argv = commandLine.match(/'.*?'|".*?"|[\w-]+/g)
 
-    # if the command has options
-    if parts[2]
-      # Split each option
-      # Result: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1 arg1 arg2"]
-      # This separates double dash too but they are joined later.
-      argv = parts[2].trim().split(/(?=-+)/);
+    # Removing quotes (single or double)
+    # Parsing ["'val1 val2'"] to ["val1 val2"]
+    argv = (arg.replace(/^'|'$|^"|"$/g,"") for arg in argv)
 
-      # This splits the args of command from the last element of the array:
-      # After concat we have: ["-", "-opt1=val1 ", "-", "-opt2 ", "-opt3 val1 val2 ", "-", "-opt4=val1 val2 val3 ", "-opt5=val1", "arg1", "arg2"]
-      argv = argv.concat(argv.pop().split(" "));
-
-      len = argv.length
-      # We need the by 1 because the length changes due to splices, so if the length is being reduced it doesn't increment
-      for i in [0...len] by 1
-        # in case the option has 2 dashes they must be joined back
-        # Iterating the array of options we have to join the dashes only in case of double dash option
-        # Converting: ["-","-opt1"] Into: ["--opt1"]
-        argv[i] = argv.splice(i,1) + argv[i] if argv[i] is "-"
-
-        # removing space of options
-        argv[i] = argv[i].trim()
-        
-        # Resetting length because using the splice above it changes.
-        len = argv.length
-
-    else argv = [] # If command doesn't have options...
-
-    # Adding command back
-    argv.unshift(parts[1])
     # This is not a meteor bundle, commandLine was provided in Meteor.settings,
     # so we need to add 'node main.js' so rc will function properly.
     argv.unshift("main.js")
     argv.unshift("node")
-
     process.argv = argv
 
 
@@ -63,6 +35,8 @@ class practical.CLI
     commandLine = Meteor?.settings?.commandLine
 
     if commandLine
+      # Having commandLine: "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
+      # We got: ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
       @commandLine2argv(commandLine)
     else
       # In a meteor bundle, the first arg is node, the 2nd main.js, and the 3rd program.json

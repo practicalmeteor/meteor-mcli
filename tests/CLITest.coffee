@@ -107,42 +107,57 @@ describe "CLI", ->
 
 
   it 'commandLine2argv - should parse simple command with no options', ->
-    cmd = "testcmd"
+    cmd = "parse-options"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd'])
+    expectedArgv = ['node','main.js','parse-options']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse simple command with args', ->
-    cmd = "testcmd arg1 arg2"
+    cmd = "parse-options arg1 arg2"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd','arg1','arg2'])
+    expectedArgv = ['node','main.js','parse-options','arg1','arg2']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse a command with options having 2 dashes', ->
-    cmd = "testcmd --opt1=val1 --opt2 --opt3 val1 val2 --opt4"
+    cmd = "parse-options --opt1=val1 --opt2 --opt3 val1 val2 --opt4"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','--opt3 val1 val2','--opt4'])
+    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','--opt3','val1','val2','--opt4']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse a command with options having 1 dash', ->
-    cmd = "testcmd -opt1=val1 -opt2 -opt3 val1 val2 -opt4"
+    cmd = "parse-options -o=val1 -p -t val1 val2 -i"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd','-opt1=val1','-opt2','-opt3 val1 val2','-opt4'])
+    expectedArgv = ['node','main.js','parse-options','-o','val1','-p','-t','val1','val2','-i']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse a command with options having 1 and 2 dashes', ->
-    cmd = "testcmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4"
+    cmd = "parse-options --opt1=val1 --opt2 -o val1 val2 -p"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4'])
+    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1','val2','-p']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse a command with options and args', ->
-    cmd = "testcmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4 arg1 arg2"
+    cmd = "parse-options --opt1=val1 --opt2 -o val1 val2 -p arg1 arg2"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','testcmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4','arg1','arg2'])
-
-  it 'commandLine2argv - should parse a command with dashes in name', ->
-    cmd = "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 -opt4 arg1 arg2"
-    result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','test-cmd','--opt1=val1','--opt2','-opt3 val1 val2','-opt4','arg1','arg2'])
+    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1','val2','-p','arg1','arg2']
+    expect(result).to.deep.equal(expectedArgv)
 
   it 'commandLine2argv - should parse a very complex command', ->
-    cmd = "test-cmd --opt1=val1 --opt2 -opt3 val1 val2 --opt4=val1 val2 val3 -opt5=val1 arg1 arg2"
+    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
     result = cli.commandLine2argv(cmd)
-    expect(result).to.deep.equal(['node','main.js','test-cmd','--opt1=val1','--opt2','-opt3 val1 val2','--opt4=val1 val2 val3','-opt5=val1','arg1','arg2'])
+    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
+    expect(result).to.deep.equal(expectedArgv)
+
+  it 'commandLine2argv - trim single and quotes', ->
+    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val'2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
+    result = cli.commandLine2argv(cmd)
+    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o',"val1 val'2", '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
+    expect(result).to.deep.equal(expectedArgv)
+
+
+  it 'executeCommand - should parse a very complex command', ->
+    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
+    Meteor.settings.commandLine = cmd
+    cli.executeCommand()
+    expect(process.argv).to.deep.equal(['node','main.js','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2'])
 
