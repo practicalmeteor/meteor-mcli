@@ -14,30 +14,17 @@ class practical.CLI
   constructor: ->
     log.debug("NODE_ENV=#{process.env.NODE_ENV}")
 
-  commandLine2argv: (commandLine)->
-    # Split options by space or surrounded by quotes
-    argv = commandLine.match(/'.*?'|".*?"|[\w-]+/g)
-
-    # Removing quotes (single or double)
-    # Parsing ["'val1 val2'"] to ["val1 val2"]
-    argv = (arg.replace(/^'|'$|^"|"$/g,"") for arg in argv)
-
-    # This is not a meteor bundle, commandLine was provided in Meteor.settings,
-    # so we need to add 'node main.js' so rc will function properly.
-    argv.unshift("main.js")
-    argv.unshift("node")
-    process.argv = argv
-
 
   executeCommand: ->
     log.debug('CLI.executeCommand()', process.argv)
 
-    commandLine = Meteor?.settings?.commandLine
+    argv = Meteor?.settings?.argv
 
-    if commandLine
-      # Having commandLine: "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
-      # We got: ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
-      @commandLine2argv(commandLine)
+    if argv
+      expect(argv, "Meteor.settings.argv is expected to be an array").to.be.an 'array'
+      argv.unshift("main.js")
+      argv.unshift("node")
+      process.argv = argv
     else
       # In a meteor bundle, the first arg is node, the 2nd main.js, and the 3rd program.json
       # We need to remove program.json, so it will not be interpreted by rc as a command line argument.

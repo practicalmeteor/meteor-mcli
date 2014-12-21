@@ -85,9 +85,9 @@ describe "CLI", ->
     chai.assert logSpy.calledWith "I am echoing an env string"
 
 
-  it 'executeCommand - should use Meteor.settings.commandLine, if it exists', ->
+  it 'executeCommand - should use Meteor.settings.argv, if it exists', ->
     process.argv = processArgv
-    Meteor.settings.commandLine = 'hello-world'
+    Meteor.settings.argv = ['hello-world']
     cli.executeCommand()
     chai.assert logSpy.calledWith "Hello world from practicalmeteor:mcli"
     expect(process.argv[0]).to.equal 'node'
@@ -103,61 +103,3 @@ describe "CLI", ->
   it 'executeCommand - should fail if command is not registered', ->
     process.argv = ['node', 'main.js', 'program-json', 'not-registered']
     expect(CLI.executeCommand).to.throw(Error)
-
-
-
-  it 'commandLine2argv - should parse simple command with no options', ->
-    cmd = "parse-options"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse simple command with args', ->
-    cmd = "parse-options arg1 arg2"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','arg1','arg2']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse a command with options having 2 dashes', ->
-    cmd = "parse-options --opt1=val1 --opt2 --opt3 val1 val2 --opt4"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','--opt3','val1','val2','--opt4']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse a command with options having 1 dash', ->
-    cmd = "parse-options -o=val1 -p -t val1 val2 -i"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','-o','val1','-p','-t','val1','val2','-i']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse a command with options having 1 and 2 dashes', ->
-    cmd = "parse-options --opt1=val1 --opt2 -o val1 val2 -p"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1','val2','-p']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse a command with options and args', ->
-    cmd = "parse-options --opt1=val1 --opt2 -o val1 val2 -p arg1 arg2"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1','val2','-p','arg1','arg2']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - should parse a very complex command', ->
-    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
-    expect(result).to.deep.equal(expectedArgv)
-
-  it 'commandLine2argv - trim single and quotes', ->
-    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val'2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
-    result = cli.commandLine2argv(cmd)
-    expectedArgv = ['node','main.js','parse-options','--opt1','val1','--opt2','-o',"val1 val'2", '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2']
-    expect(result).to.deep.equal(expectedArgv)
-
-
-  it 'executeCommand - should parse a very complex command', ->
-    cmd = "parse-options --opt1=val1 --opt2 -o \"val1 val2\" -Rfj --opt4='val1 val2 val3' -p val1 arg1 arg2"
-    Meteor.settings.commandLine = cmd
-    cli.executeCommand()
-    expect(process.argv).to.deep.equal(['node','main.js','--opt1','val1','--opt2','-o','val1 val2', '-Rfj','--opt4','val1 val2 val3','-p','val1','arg1','arg2'])
-

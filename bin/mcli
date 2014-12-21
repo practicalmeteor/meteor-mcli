@@ -5,6 +5,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+argv="["
+
 while (( "$#" )); do
   if [ "$1" == "--settings" ]; then
     if [ ! -e $2 ]; then
@@ -14,19 +16,21 @@ while (( "$#" )); do
     meteor_settings_path=$2
     shift
   else
-    if [ -z "$cmd_line" ]; then
-      cmd_line="$1"
+    if [ "$argv" == "[" ]; then
+      argv="$argv\"$1\""
     else
-      cmd_line="$cmd_line $1"
+      argv="$argv, \"$1\""
     fi
   fi
   shift
 done
 
+argv="$argv]"
+
 if [ -n "$meteor_settings_path" ]; then
-  jq ". + {commandLine: \"$cmd_line\"}" < $meteor_settings_path > /tmp/settings.json
+  jq ". + {argv: $argv }" < $meteor_settings_path > /tmp/settings.json
 else
-  echo "{ \"commandLine\": \"$cmd_line\" }" > /tmp/settings.json
+  echo "{ \"argv\": $argv }" > /tmp/settings.json
 fi
 
 meteor --once --settings /tmp/settings.json
