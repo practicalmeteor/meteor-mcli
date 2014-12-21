@@ -1,7 +1,7 @@
 // If called without --prefix, the default prefix will be used.
 // To print to stderr, set '--stderr=true'
 var defaultOptions = {
-  prefix: "practicalmeteor:mcli - ",
+  prefix: "prefix:",
   stderr: false
 };
 
@@ -11,10 +11,15 @@ var echoCommand = function(options) {
   if(options._ && options._.length > 0)
     string = options._.join(' ');
 
+  msg = options.prefix + ' ' + string;
+
+  if(options.postfix)
+    msg += ' ' + options.postfix;
+
   if(options.stderr)
-    console.error(options.prefix + string);
+    console.error(msg);
   else
-    console.info(options.prefix + string);
+    console.info(msg);
 };
 
 CLI.registerCommand('echo', echoCommand, defaultOptions);
