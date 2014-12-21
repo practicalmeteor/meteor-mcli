@@ -1,27 +1,18 @@
 #!/bin/bash -e
 
+if [ "$1" == "--settings" ]; then
+  if [ ! -e $2 ]; then
+    >&2 echo "Error: The specified settings file doesn't exist."
+    exit 1
+  fi
+  meteor_settings_path=$2
+  shift 2
+fi
+
 if [ -z "$1" ]; then
   >&2 echo "Error: you need to provide at least a command name."
   exit 1
 fi
-
-while (( "$#" )); do
-  if [ "$1" == "--settings" ]; then
-    if [ ! -e $2 ]; then
-      >&2 echo "Error: The specified settings file doesn't exist."
-      exit 1
-    fi
-    meteor_settings_path=$2
-    shift
-  else
-    if [ -z "$cmd_line" ]; then
-      cmd_line="$1"
-    else
-      cmd_line="$cmd_line $1"
-    fi
-  fi
-  shift
-done
 
 if [ -n "$meteor_settings_path" ]; then
   export METEOR_SETTINGS=$(tr '\n' ' ' < $meteor_settings_path)
@@ -41,4 +32,4 @@ cd /tmp/bundle
 
 (cd programs/server && npm install)
 
-node main.js $cmd_line
+node main.js "$@"
