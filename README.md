@@ -7,7 +7,7 @@ A meteor package and command line tools for creating and running command line / 
 
 ## Incentive
 
-To be able to reuse the same code of your meteor app in your command line programs, instead of having to create a separate node / npm code base with lot's of code duplication with your meteor app.
+To be able to reuse the same code of your meteor app in your command line programs, instead of having to create a separate node / npm code base with lot's of code duplicated from your meteor app.
 
 ## Quickstart
 
@@ -81,9 +81,11 @@ Note that you will need to replace '-' in command names with '_' in your environ
 
 Arguments provided on the command line are stored in the 'options._' array. An example can be found [here](https://github.com/practicalmeteor/meteor-mcli/blob/master/starter-mcli-app/server/EchoCommand.js).
 
-## MongoDB
+## Using the same mongodb in your web app and your command line program(s)
 
-Unfortunately, mcli doesn't know how to start or connect to the internal meteor mongodb database before executing your command just yet (pull requests would be appreciated for that). We recommend you create a free mongodb sandbox database with [mongohq](https://www.compose.io/) (compose.io) and use it for both your meteor app and meteor mcli app during development (that's what we do).
+In development mode, every meteor app has it's own internal mongodb that is located inside an app's .meteor/local folder.
+
+Therefore, if you want to share a mongodb between your webapp and your command line programs, you will need to use an external mongodb and export the MONGO_URL environment variable so your meteor apps can connect to it. You  can get a free sandbox database from [compose.io](https://www.compose.io/) (formerly mongohq), but there are other alternatives out there.
 
 ## Executing commands in a meteor build
 
@@ -148,7 +150,7 @@ curl https://raw.githubusercontent.com/practicalmeteor/meteor-mcli/master/bin/in
 
 ## How it works
 
-Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line to Meteor.settings.commandLine. The practicalmeteor:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
+Since in local development mode, meteor cannot accept command line arguments, the mcli tool creates or extends your meteor settings file and adds the specified command line arguments as an array to Meteor.settings.argv. The practicalmeteor:cli package will read the command line from this setting, if it exists, or the normal way (with some meteor specific manipulation) from process.argv in a meteor build.
 
 ## Changelog
 
