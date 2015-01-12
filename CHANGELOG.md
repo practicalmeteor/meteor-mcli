@@ -2,6 +2,7 @@
 
 * Update starter-mcli-app to meteor 1.0.2
 * Support option values with spaces in mcli and mcli-bundle
+* Fix install script 
 
 ## 1.1.2
 
