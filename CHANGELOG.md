@@ -1,3 +1,8 @@
+## 1.1.4
+
+* Add support for commands with async code
+* Update starter-mcli-app to meteor 1.0.2.1
+
 ## 1.1.3
 
 * Update starter-mcli-app to meteor 1.0.2
