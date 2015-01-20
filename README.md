@@ -78,7 +78,8 @@ Here is an example async [ls](https://github.com/practicalmeteor/meteor-mcli/blo
 
 var child_process = Npm.require('child_process');
 
-// When you register your command as an async one, your command will be called with a done function as a 2nd argument
+// When you register your command as an async one,
+// your command will be called with a done function as a 2nd argument
 // which you need to call when your command has completed.
 var lsCommand = function(options, done) {
 
