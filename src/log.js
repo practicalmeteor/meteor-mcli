@@ -1,1 +1,1 @@
-log = loglevel.createPackageLogger('practicalmeteor:mcli', 'info');
+log = loglevel.createPackageLogger('practicalmeteor:mcli', 'debug');

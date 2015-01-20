@@ -1,4 +1,5 @@
 rc = Npm.require('rc')
+Future = Npm.require('fibers/future');
 
 @practical ?= {}
 
@@ -7,6 +8,8 @@ class practical.CLI
   @instance: null
 
   registeredCommands: { }
+
+  future: null
 
   @get:->
     practical.CLI.instance ?= new CLI()
@@ -47,14 +50,27 @@ class practical.CLI
 
     options = rc(commandName.replace('-', '_'), command.defaultOptions)
 
-    log.debug("Executing '#{commandName}' with options:\n", options)
-
     # Execute the registered command
-    command.func options
+    if not command.async
+      log.debug("Executing '#{commandName}' with options:\n", options)
+      command.func options
+    else
+      log.debug("Executing async '#{commandName}' with options:\n", options)
+      @future = new Future()
+      command.func options, @done
+      @future.wait()
+
+
+  done: =>
+    log.debug("CLI.done()")
+    expect(@future, "command is not async, cannot call done").to.be.an 'object'
+    expect(@future.isResolved(), "done already called").to.be.false
+
+    @future.return(null)
 
 
   # Note: defaultOptions will be mutated by actual command line options.
-  registerCommand: (name, func, defaultOptions = {}) ->
+  registerCommand: (name, func, defaultOptions = {}, async = false) ->
     log.debug("CLI.registerCommand()")
     expect(name, "command name is missing").to.be.a("string")
     expect(func, "command function is missing").to.be.a("function")
@@ -62,7 +78,7 @@ class practical.CLI
 
     log.debug("Registering '#{name}' with default options:\n", defaultOptions)
 
-    @registeredCommands[name] = { func: func, defaultOptions: defaultOptions }
+    @registeredCommands[name] = { func: func, defaultOptions: defaultOptions, async: async }
 
 
 CLI = practical.CLI.get()
