@@ -11,7 +11,8 @@ To be able to reuse the same code of your meteor app in your command line progra
 
 ## Quickstart
 
-```
+```bash
+
 # jq is a command-line JSON processor that the mcli command line tool depends on.
 # Replace the first line with your linux's distribution way of installing packages.
 sudo apt-get install -y jq
@@ -30,14 +31,16 @@ The starter-mcli-app is a fully functional meteor command line program that you 
 
 You can include multiple commands in a single meteor command line program. To register your commands:
 
-```
-# defaultOptions is optional
-CLI.registerCommand(commandName, functionToExecute, defaultOptions);
+```javascript
+
+// defaultOptions and async are optional
+CLI.registerCommand(commandName, functionToExecute, defaultOptions = {}, async = false);
 ```
 
 For example:
 
-```
+```javascript
+
 var defaultOptions = { stderr: false };
 
 var helloWorld = function(options) {
@@ -52,18 +55,62 @@ CLI.registerCommand('hello-world', helloWorld, defaultOptions);
 
 To run your command, just:
 
-```
+```bash
+
 # Run this from your meteor command line program folder.
 mcli hello-world --stderr=true
 ```
 
 Or, with a meteor settings file:
 
-```
+```bash
+
 mcli --settings my-settings.json hello-world --stderr=true
 ```
 
-You have more examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](https://github.com/practicalmeteor/meteor-mcli/tree/master/starter-mcli-app/server) command line program.
+## Async Commands API
+
+Unlike a meteor webapp, which never exits and therefore your async callbacks will always execute, command line programs with async callbacks will exit, unless you tell them not to using [futures](https://github.com/laverdet/node-fibers) or mcli's simplified async API based on futures.
+
+Here is an example async [ls](https://github.com/practicalmeteor/meteor-mcli/blob/master/starter-mcli-app/server/LsCommand.js) command from the starter-mcli-app:
+
+```javascript
+
+var child_process = Npm.require('child_process');
+
+// When you register your command as an async one,
+// your command will be called with a done function as a 2nd argument
+// which you need to call when your command has completed.
+var lsCommand = function(options, done) {
+
+  var ls = child_process.spawn("ls");
+
+  ls.stdout.setEncoding("utf8");
+  ls.stdout.on("data", function(data){
+    process.stdout.write(data);
+  });
+
+  ls.stderr.setEncoding("utf8");
+  ls.stderr.on("data", function(data){
+    process.stderr.write(data);
+  });
+
+  // You need to wait on a child process's close event, and not on it's exit event,
+  // to make sure it has exited and all it's output has been delivered to you.
+  ls.on("close", function(code, signal){
+    // Call done() to let CLI know your command has completed and it can exit.
+    // You can also call CLI.done() instead
+    done();
+  });
+};
+
+// When registering an async command, pass in true as the last argument.
+CLI.registerCommand('ls', lsCommand, {}, true);
+```
+
+## Additional Examples
+
+You have additional examples of commands, including commands that take command line arguments as well as options, in the [starter-mcli-app](https://github.com/practicalmeteor/meteor-mcli/tree/master/starter-mcli-app/server) command line program.
 
 ## Command Line Options, Defaults and Arguments
 
@@ -73,7 +120,8 @@ When you register your command, you provide a json object with default values on
 
 Command line options can also be specified using environment variables, prefixed with your command name, i.e. for the hello-world example above, before running your program, you can:
 
-```
+```bash
+
 export hello_world_stderr=true
 ```
 
@@ -91,19 +139,22 @@ Therefore, if you want to share a mongodb between your webapp and your command l
 
 You can execute your commands in a meteor build by appending them to the standard meteor node command line, i.e.
 
-```
+```bash
+
 node main.js hello-world --stderr=true
 ```
   
 mcli-bundle can be used to test your commands are working in a meteor build before deployment to production, by running:
 
-```
+```bash
+
 mcli-bundle hello-world --stderr=true
 ```
 
 It will build your meteor program, extract it to a /tmp folder, install the npm packages and run your command, as above. You can also specify a settings file:
 
-```
+```bash
+
 mcli-bundle --settings my-settings.json hello-world --stderr=true
 ```
 
@@ -115,7 +166,8 @@ In this case, mcli-bundle will automatically set the METEOR_SETTINGS environment
 
 - Run:
 
-```
+```bash
+
 # Meteor command line programs cannot include the webapp package, 
 # as well as client side packages
 meteor remove meteor-platform
@@ -137,14 +189,16 @@ meteor add practicalmeteor:mcli
 
 - Install the jq json command line processor:
 
-```
+```bash
+
 # Replace the first line with your linux's distribution way of installing packages.
 sudo apt-get install -y jq
 ```
 
 - Install the mcli and mcli-bundle tools:
 
-```
+```bash
+
 curl https://raw.githubusercontent.com/practicalmeteor/meteor-mcli/master/bin/install-mcli.sh | bash
 ```
 

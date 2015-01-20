@@ -10,7 +10,11 @@ cd starter-mcli-app
 mcli hello-world
 mcli echo --stderr=true I am an stderr echo
 mcli find-one --collection Todos
+# Async command
+mcli ls
 mcli-bundle find-one --collection Todos
+# Async command
+mcli-bundle ls
 
 # Test the install-starter-kit.sh script
 cd ..

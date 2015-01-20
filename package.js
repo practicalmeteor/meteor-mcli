@@ -6,7 +6,7 @@ Npm.depends({
 Package.describe({
   summary: "A package and tools for creating and running command line / cli programs with meteor.",
   name: "practicalmeteor:mcli",
-  version: "1.1.3",
+  version: "1.1.4",
   git: "https://github.com/practicalmeteor/meteor-mcli.git"
 });
 
@@ -31,6 +31,6 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function(api) {
-  api.use(["coffeescript", "practicalmeteor:mcli", "practicalmeteor:munit@2.1.2"], 'server');
+  api.use(["coffeescript", "practicalmeteor:mcli", "practicalmeteor:loglevel@1.1.0_3", "practicalmeteor:munit@2.1.2"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });

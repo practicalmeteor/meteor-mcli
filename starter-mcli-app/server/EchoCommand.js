@@ -6,7 +6,6 @@ var defaultOptions = {
 };
 
 var echoCommand = function(options) {
-  // We use the meteor logging package, instead of console.log and console.error
   var string = "No string to echo was provided.";
   if(options._ && options._.length > 0)
     string = options._.join(' ');
