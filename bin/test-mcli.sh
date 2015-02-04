@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 # Test the mcli package
-spacejam test-packages ./
+METEOR_TEST_PACKAGES=1 & spacejam test-packages ./
 
 # Test the mcli and mcli-bundle tools
 export PATH=/usr/local/bin:$PATH:$PWD/bin
