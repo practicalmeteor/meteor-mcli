@@ -1,8 +1,11 @@
 #!/bin/bash -xe
 
+# Define this so that main will not be exported from mcli because meteor test-packages has it's own main
+export METEOR_TEST_PACKAGES=1
 # Test the mcli package
-METEOR_TEST_PACKAGES=1 && spacejam test-packages ./
+spacejam test-packages ./
 
+unset METEOR_TEST_PACKAGES
 # Test the mcli and mcli-bundle tools
 export PATH=/usr/local/bin:$PATH:$PWD/bin
 export PACKAGE_DIRS=$(dirname $PWD)
