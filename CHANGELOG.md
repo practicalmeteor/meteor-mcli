@@ -1,3 +1,9 @@
+## 1.1.5
+
+* Update starter-mcli-app to meteor 1.0.3.2
+* Update practicalmeteor:loglevel dependency to 1.2.0_1
+* Update async ls example to use CLI.done()
+
 ## 1.1.4
 
 * Add support for commands with async code
