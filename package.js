@@ -18,7 +18,7 @@ Package.onUse(function (api) {
     "coffeescript",
     "underscore",
     "practicalmeteor:chai@1.9.2_3",
-    "practicalmeteor:loglevel@1.1.0_3",
+    "practicalmeteor:loglevel@1.2.0_1",
     'practicalmeteor:underscore.string@2.3.3_3'
   ], "server");
 
@@ -31,6 +31,6 @@ Package.onUse(function (api) {
 
 
 Package.onTest(function(api) {
-  api.use(["coffeescript", "practicalmeteor:mcli", "practicalmeteor:loglevel@1.1.0_3", "practicalmeteor:munit@2.1.2"], 'server');
+  api.use(["coffeescript", "practicalmeteor:mcli", "practicalmeteor:loglevel@1.2.0_1", "practicalmeteor:munit@2.1.2"], 'server');
   api.add_files("tests/CLITest.coffee", "server")
 });
