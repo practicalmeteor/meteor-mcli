@@ -16,7 +16,7 @@ minimongo@1.0.6
 mongo@1.0.11
 ordered-dict@1.0.2
 practicalmeteor:chai@1.9.2_3
-practicalmeteor:loglevel@1.1.0_3
+practicalmeteor:loglevel@1.2.0_1
 practicalmeteor:mcli@1.1.4
 practicalmeteor:underscore.string@2.3.3_3
 random@1.0.2

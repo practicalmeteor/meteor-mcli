@@ -79,9 +79,8 @@ Here is an example async [ls](https://github.com/practicalmeteor/meteor-mcli/blo
 var child_process = Npm.require('child_process');
 
 // When you register your command as an async one,
-// your command will be called with a done function as a 2nd argument
-// which you need to call when your command has completed.
-var lsCommand = function(options, done) {
+// you need to call CLI.done() when your command has completed.
+var lsCommand = function(options) {
 
   var ls = child_process.spawn("ls");
 
@@ -98,9 +97,8 @@ var lsCommand = function(options, done) {
   // You need to wait on a child process's close event, and not on it's exit event,
   // to make sure it has exited and all it's output has been delivered to you.
   ls.on("close", function(code, signal){
-    // Call done() to let CLI know your command has completed and it can exit.
-    // You can also call CLI.done() instead
-    done();
+    // Calling CLI.done() will let CLI know your command has completed and it can exit.
+    CLI.done();
   });
 };
 
