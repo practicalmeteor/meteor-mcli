@@ -17,7 +17,7 @@ Package.onUse(function (api) {
   api.use([
     "coffeescript",
     "underscore",
-    "practicalmeteor:chai@1.9.2_3",
+    "practicalmeteor:chai",
     "practicalmeteor:loglevel@1.2.0_1",
     'practicalmeteor:underscore.string@2.3.3_3'
   ], "server");
