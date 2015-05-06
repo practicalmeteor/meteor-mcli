@@ -33,4 +33,6 @@ else
   echo "{ \"argv\": $argv }" > /tmp/settings.json
 fi
 
+export METEOR_NO_WEBAPP=1
+
 meteor --once --settings /tmp/settings.json

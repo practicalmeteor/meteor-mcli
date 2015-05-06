@@ -32,4 +32,6 @@ cd /tmp/bundle
 
 (cd programs/server && npm install)
 
+export METEOR_NO_WEBAPP=1
+
 node main.js "$@"
