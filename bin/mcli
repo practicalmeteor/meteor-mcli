@@ -35,4 +35,4 @@ fi
 
 export METEOR_NO_WEBAPP=1
 
-meteor --once --settings /tmp/settings.json
+meteor --once --raw-logs --settings /tmp/settings.json
